@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Artwork.h"
 
 @interface ViewController ()
 
@@ -42,6 +43,13 @@
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(initialLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
     
     [self.mapView setRegion:viewRegion];
+    
+    CLLocationCoordinate2D artLocation = CLLocationCoordinate2DMake(21.283921, -157.831661);
+
+    
+    Artwork *artwork = [[Artwork alloc] initWithTitle:@"King David Kalakaua" locationName:@"Waikiki Gateway Park" discipline:@"Sculpture" coordinate:artLocation];
+    
+    [self.mapView addAnnotation:artwork]; 
     
 }
 
