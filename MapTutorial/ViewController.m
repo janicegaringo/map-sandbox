@@ -35,6 +35,7 @@
         [self.locationManager requestAlwaysAuthorization];
     }
     
+    self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     
     // set initial location in Honolulu
@@ -46,10 +47,9 @@
     
     CLLocationCoordinate2D artLocation = CLLocationCoordinate2DMake(21.283921, -157.831661);
 
-    
     Artwork *artwork = [[Artwork alloc] initWithTitle:@"King David Kalakaua" locationName:@"Waikiki Gateway Park" discipline:@"Sculpture" coordinate:artLocation];
     
-    [self.mapView addAnnotation:artwork]; 
+    [self.mapView addAnnotation:artwork];
     
 }
 
@@ -57,6 +57,36 @@
 - (IBAction)plotPoints:(id)sender
 {
 
+}
+
+#pragma mark - MapKit delegate methods
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    static NSString *identifier = @"Artwork";
+    
+    if([annotation isKindOfClass:[Artwork class]]) {
+        
+        MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        
+        if(annotationView == nil) {
+            annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView.enabled = YES;
+            annotationView.canShowCallout = YES;
+            annotationView.calloutOffset = CGPointMake(-5, 5);
+            annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    
+        
+        }
+        else {
+            annotationView.annotation = annotation;
+        }
+    
+        return annotationView;
+        
+    }
+    
+     return nil;
 }
 
 @end

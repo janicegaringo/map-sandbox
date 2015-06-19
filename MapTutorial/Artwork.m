@@ -10,11 +10,11 @@
 
 @implementation Artwork
 
-- (id)initWithTitle:(NSString *)artTitle locationName:(NSString *)locationName discipline:(NSString *)discipline coordinate:(CLLocationCoordinate2D)coordinate
+- (id)initWithTitle:(NSString *)title locationName:(NSString *)locationName discipline:(NSString *)discipline coordinate:(CLLocationCoordinate2D)coordinate
 {
     if(self = [super init]) {
         
-        self.artTitle = artTitle;
+        self.title = title;
         self.locationName = locationName;
         self.discipline = discipline;
         self.coordinate = coordinate;

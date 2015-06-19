@@ -12,7 +12,7 @@
 
 @interface Artwork : NSObject <MKAnnotation>
 
-@property (nonatomic) NSString *artTitle;
+@property (nonatomic) NSString *title;
 @property (nonatomic) NSString *locationName;
 @property (nonatomic) NSString *discipline;
 @property (nonatomic) CLLocationCoordinate2D coordinate;
