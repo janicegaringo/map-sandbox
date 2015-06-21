@@ -8,11 +8,13 @@
 
 #import "ViewController.h"
 #import "Artwork.h"
+#import <Foundation/NSJSONSerialization.h>
 
 @interface ViewController ()
 
 #define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define METERS_PER_MILE 1609.344
+#define kbackgroundQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic) CLLocationManager *locationManager;
@@ -45,12 +47,41 @@
     
     [self.mapView setRegion:viewRegion];
     
+    
     CLLocationCoordinate2D artLocation = CLLocationCoordinate2DMake(21.283921, -157.831661);
 
     Artwork *artwork = [[Artwork alloc] initWithTitle:@"King David Kalakaua" locationName:@"Waikiki Gateway Park" discipline:@"Sculpture" coordinate:artLocation];
     
     [self.mapView addAnnotation:artwork];
     
+    [self parseJsonFromFile]; 
+    
+}
+
+
+- (void)parseJsonFromFile
+{
+    // NSJsonSerializer
+    
+    dispatch_async(kbackgroundQueue, ^{
+         NSURL *url = [NSURL URLWithString:@"http://www.meladori.com/maptest/PublicArt.json"];
+        
+         NSData *data = [NSData dataWithContentsOfURL:url];
+        
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+
+    });
+    
+}
+
+
+- (void)fetchedData:(NSData *)responseData
+{
+    NSError *error;
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
+    
+    NSLog(@"json : %@" , json);
 }
 
 
