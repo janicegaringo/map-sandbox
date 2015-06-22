@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) NSMutableArray *artworkArray;
 
 - (IBAction)plotPoints:(id)sender;
 
@@ -28,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.artworkArray = [@[] mutableCopy];
     
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
@@ -80,15 +83,42 @@
     NSError *error;
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
+        
+    NSArray *data = [json objectForKey:@"data"];
     
-    NSLog(@"json : %@" , json);
+    for(id row in data) {
+        
+        NSNumber *latitude = [row objectAtIndex:18];
+        NSNumber *longtitude = [row objectAtIndex:19];
+        NSString *locationName = [row objectAtIndex:12];
+        NSString *title = [row objectAtIndex:16];
+        NSString *discipline = [row objectAtIndex:15];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([latitude doubleValue], [longtitude doubleValue]);
+        
+        Artwork *artwork = [self artworkWithTitle:title locationName:locationName discipline:discipline coordinate:coordinate];
+        
+        [self.artworkArray addObject:artwork];
+
+    }
+    
+    // NSLog(@"self.artworkArray : %@", self.artworkArray);
+    
+}
+
+
+- (Artwork *)artworkWithTitle:(NSString *)title locationName:(NSString *)locationName discipline:(NSString *)discipline coordinate:(CLLocationCoordinate2D)coordinate
+{
+    Artwork *artwork = [[Artwork alloc] initWithTitle:title locationName:locationName discipline:discipline coordinate:coordinate];
+    
+    return artwork;
 }
 
 
 - (IBAction)plotPoints:(id)sender
 {
-
+    [self.mapView addAnnotations:self.artworkArray];
 }
+
 
 #pragma mark - MapKit delegate methods
 
