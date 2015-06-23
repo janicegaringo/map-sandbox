@@ -2,7 +2,7 @@
 //  Artwork.m
 //  MapTutorial
 //
-//  Created by Janice Garingo on 6/19/15.
+//  Created by Janice Taylor on 6/19/15.
 //  Copyright (c) 2015 Janice Taylor. All rights reserved.
 //
 
@@ -14,7 +14,11 @@
 {
     if(self = [super init]) {
         
-        self.title = title;
+        if ([title isKindOfClass:[NSNull class]])
+            self.title = @"";
+        else
+            self.title = title;
+
         self.locationName = locationName;
         self.discipline = discipline;
         self.coordinate = coordinate;
@@ -28,5 +32,6 @@
 {
     return self.locationName;
 }
+
 
 @end

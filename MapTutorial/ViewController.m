@@ -50,12 +50,11 @@
     
     [self.mapView setRegion:viewRegion];
     
-    
-    CLLocationCoordinate2D artLocation = CLLocationCoordinate2DMake(21.283921, -157.831661);
-
-    Artwork *artwork = [[Artwork alloc] initWithTitle:@"King David Kalakaua" locationName:@"Waikiki Gateway Park" discipline:@"Sculpture" coordinate:artLocation];
-    
-    [self.mapView addAnnotation:artwork];
+//    CLLocationCoordinate2D artLocation = CLLocationCoordinate2DMake(21.283921, -157.831661);
+//
+//    Artwork *artwork = [[Artwork alloc] initWithTitle:@"King David Kalakaua" locationName:@"Waikiki Gateway Park" discipline:@"Sculpture" coordinate:artLocation];
+//    
+//    [self.mapView addAnnotation:artwork];
     
     [self parseJsonFromFile]; 
     
@@ -100,7 +99,7 @@
         [self.artworkArray addObject:artwork];
 
     }
-    
+        
     // NSLog(@"self.artworkArray : %@", self.artworkArray);
     
 }
